@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Média Aluno</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+
+<body>
+	<style>
+		* {
+			box-sizing: border-box;
+		}
+		html {
+			font-family: "proxima-nova", "Helvetica Neue", Helvetica, Arial, sans-serif;
+			-webkit-font-smoothing: antialiased;
+		}
+		body {
+			background-color: #0093E9;
+            background-image: linear-gradient(160deg, #0093E9 0%, #92e6dc 100%);
+			height: 100vh;
+			display: -webkit-box;
+			display: flex;
+			-webkit-box-align: center;
+			align-items: center;
+			-webkit-box-orient: vertical;
+			-webkit-box-direction: normal;
+			flex-direction: column;
+			-webkit-box-pack: center;
+			justify-content: center;
+			padding-top: 16px;
+			-webkit-transition: all 0.3s ease-in;
+			transition: all 0.3s ease-in;
+		}
+		@media (max-width: 1024px) {
+			body {
+			padding: 32px;
+			-webkit-transition: all 0.3s ease-in;
+			transition: all 0.3s ease-in;
+			}
+		}
+		@media (max-width: 1024px) {
+			body {
+			padding: 16px;
+			-webkit-transition: all 0.3s ease-in;
+			transition: all 0.3s ease-in;
+			}
+		}
+		h1 {
+			text-align: center;
+			color: #000;
+		}
+		h2 {
+			text-align: center;
+			color: #000;
+			font-size: 24px;
+		}
+		p {
+			text-align: center;
+			margin-top: 0;
+		}
+		.container {
+			max-width: 310px;
+			margin: 0 auto;
+			background-color: #fff;
+			padding: 32px;
+			box-shadow: 1px 1px 0px #111;
+			border-radius: 8px;
+			-webkit-transition: all 0.3s ease-in;
+			transition: all 0.3s ease-in;
+
+		}
+		@media (max-width: 512px) {
+			.container {
+			padding: 32px;
+			-webkit-transition: all 0.3s ease-in;
+			transition: all 0.3s ease-in;
+			}
+		}
+		@media (max-width: 360px) {
+			.container {
+			padding: 16px;
+			-webkit-transition: all 0.3s ease-in;
+			transition: all 0.3s ease-in;
+			}
+		}
+		label {
+			text-align: center;
+			display: inline-block;
+			margin-bottom: 8px;
+			font-weight: bold;
+		}
+		input,
+		select {
+			display: inline-block;
+			background-color: #fff;
+			color: #888;
+			border: 2px solid #888;
+			border-radius: 2px;
+			height: 56px;
+			width: 100%;
+			font-size: 24px;
+			padding: 0 16px;
+			margin-bottom: 24px;
+		}
+		input:focus,
+		select:focus {
+			background-color: #fff;
+			color: #00bb8c;
+			border-color: #002d3f;
+			outline: 0;
+		}
+		input[type=number]::-webkit-inner-spin-button,
+		input[type=number]::-webkit-outer-spin-button {
+			-webkit-appearance: none;
+			margin: 0;
+		}
+		 .error p, .error span{
+			color: red;
+			font-size: 20px;
+		 }
+		 .approval p, .approval span{
+			color: rgb(0, 206, 0);
+			font-size: 20px;
+		 }
+		@media (max-height: 750px) {
+			body {
+			height: 100%;
+			}
+		}
+	</style>
+
+	<div id="calculator">
+
+		<div class="container">
+			<form action="#"  >
+				<h1>Calculadora</h1>
+				
+				<p><strong>Média Final</strong></p>
+
+				  <h2 ><strong>{{media}}</strong></h2>
+
+				<div v-bind:class="{ error: !isAlunoAprovado } ">
+					<span v-if="!isAlunoAprovado && isPreenchido">{{aluno}} reprovado!</span>
+				</div>
+
+                <div v-bind:class="{ approval: isAlunoAprovado } ">
+					<span v-if="isAlunoAprovado && isPreenchido">{{aluno}} aprovado!</span>
+				</div>
+
+                <label >Nome do Aluno</label>
+                <input type="text" name="aluno" class="nota" v-model="aluno" />
+
+                <label >Nota 1</label>
+                <input type="number" name="nota1" class="nota" v-model.number="nota1" />
+
+                <label >Nota 2</label>
+				<input type="number" name="nota2" class="nota" v-model.number="nota2" />
+                
+                <label >Nota 3</label>
+				<input type="number" name="nota3" class="nota" v-model.number="nota3" />
+
+				<p><strong>Média para aprovação: 6.0</strong></p>
+
+			</form>
+		</div>
+	</div>
+
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+	<script>
+		var calculator = new Vue({
+			el: '#calculator',
+			data: {
+                aluno:"",
+                nota1:null,
+                nota2:null,
+				nota3:null,
+			},
+			computed: {
+				isPreenchido(){
+					return this.aluno != '' && this.nota1 != null && this.nota2 != null && this.nota3 != null;
+				},
+				isAlunoAprovado(){
+				return ((this.nota1 + this.nota2 + this.nota3)/3 ) >= 6.0
+				},
+				media(){
+					return ((this.nota1 + this.nota2 + this.nota3) / 3);
+				 }
+            },
+		});
+
+	</script>
+
+</body>
+
+</html>
